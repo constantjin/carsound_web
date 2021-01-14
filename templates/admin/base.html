@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %} 
+{% block userlinks %}
+    {{ block.super }}
+    / <a href="{% url 'maintenance:on' %}"> Maintenance On </a> / 
+    <a href="{% url 'maintenance:off' %}"> Maintenance Off </a>
+{% endblock %}
