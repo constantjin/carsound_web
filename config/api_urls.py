@@ -4,7 +4,7 @@ from subjects.api import views as subjects_views
 
 from sounds.api import views as sounds_views
 
-# from responses.api import views as responses_view
+from ratings.api import views as ratings_view
 
 app_name = "api"
 urlpatterns = [
@@ -26,10 +26,10 @@ urlpatterns = [
         view=sounds_views.GetEmotionalSound.as_view(),
         name="get-emotional",
     ),
-    # path(
-    #     # {% url 'api:responses' %}
-    #     route="responses/",
-    #     view=responses_view.ResponseListCreateAPIView.as_view(),
-    #     name="responses",
-    # ),
+    path(
+        # {% url 'api:ratings' %}
+        route="ratings/",
+        view=ratings_view.RatingCreateAPIView.as_view(),
+        name="ratings",
+    ),
 ]
