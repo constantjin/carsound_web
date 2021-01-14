@@ -278,4 +278,6 @@ dist
 
 # project specific
 maintenance_mode_state.txt
-static/stims/
+static/stims/**/*.*
+!static/stims/**/*.gitkeep
+staticfiles/**/*.wav
