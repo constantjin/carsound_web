@@ -10,5 +10,6 @@ export default {
     rollupOptions: {
       input: "src/main.js",
     },
+    base: "/static/",
   },
 };

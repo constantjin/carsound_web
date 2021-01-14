@@ -34,7 +34,6 @@ INSTALLED_APPS = [
     # 3rd Party apps
     "rest_framework",
     "corsheaders",
-    "manifest_loader",
     # Django base apps
     "django.contrib.admin",
     "django.contrib.auth",
