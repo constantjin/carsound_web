@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     # 3rd Party apps
     "rest_framework",
     "corsheaders",
+    "manifest_loader",
     # Django base apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -73,6 +74,9 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "maintenance_mode.context_processors.maintenance_mode",
             ],
+            "libraries": {
+                "load_manifest": "templatetags.load_manifest",
+            },
         },
     },
 ]
@@ -118,7 +122,11 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+FRONTEND_DIST_PATH = os.path.join(BASE_DIR, "experiment", "dist")
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    FRONTEND_DIST_PATH,
+)
 
 # Sounds files
 SOUNDS_URL = "static/stims/"

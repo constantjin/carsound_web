@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from .frontend_view import index
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     # /maintenance/on|off
     path("maintenance/", include("config.maintenance_url", namespace="maintenance")),
     # /api/
     path("api/", include("config.api_urls", namespace="api")),
+    # /
+    path("", view=index, name="index"),
 ]

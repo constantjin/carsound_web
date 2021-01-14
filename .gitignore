@@ -281,3 +281,10 @@ maintenance_mode_state.txt
 static/stims/**/*.*
 !static/stims/**/*.gitkeep
 staticfiles/**/*.wav
+
+# Vite
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
