@@ -73,9 +73,6 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "maintenance_mode.context_processors.maintenance_mode",
             ],
-            "libraries": {
-                "load_manifest": "templatetags.load_manifest",
-            },
         },
     },
 ]

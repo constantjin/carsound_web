@@ -5,12 +5,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ manifest|load_manifest:"main.css" }}" /> 
-    <link rel="icon" href="{{ manifest|load_manifest:"logo.png" }}" /> 
+    {% for css in vite.css %}
+        <link rel="stylesheet" href="{{ css }}" /> 
+    {% endfor %}
+    {% for png in vite.png %}
+        <link rel="icon" href="{{ png }}" /> 
+    {% endfor %}
     <title>실험 페이지</title>
 </head>
 <body>
 <div id="app"></div>
-<script type="module" src="{{ manifest|load_manifest:"main.js" }}"></script>
+{% for js in vite.js %}
+    <script type="module" src="{{ js }}"></script>
+{% endfor %}
 </body>
 </html>
