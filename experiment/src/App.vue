@@ -1,19 +1,21 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png" />
-  <HelloWorld msg="Hello Vue 3 + Vite" />
+  <div>
+    <alert />
+    <keep-alive>
+      <sound />
+    </keep-alive>
+    <div
+      id="app"
+      class="min-h-screen flex flex-col justify-center items-center text-center m-auto"
+    >
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+import Alert from "./components/Alert.vue";
+import Sound from "./components/Sound.vue";
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+<style scoped></style>

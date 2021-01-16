@@ -28,7 +28,7 @@ class RunSoundAdmin(admin.ModelAdmin):
         for sound_path in sound_paths:
             sound_with_ext = os.path.basename(sound_path)
             sound_name = os.path.splitext(sound_with_ext)[0]
-            sound_url = settings.DOMAIN + settings.SOUNDS_URL + "run/" + sound_with_ext
+            sound_url = settings.SOUNDS_URL + "run/" + sound_with_ext
             self.model.objects.create(name=sound_name, url=sound_url)
 
         self.model.objects.create(name="base", url="")  # Base run
@@ -56,9 +56,7 @@ class EmotionalSoundAdmin(admin.ModelAdmin):
         for sound_path in sound_paths:
             sound_with_ext = os.path.basename(sound_path)
             sound_name = os.path.splitext(sound_with_ext)[0]
-            sound_url = (
-                settings.DOMAIN + settings.SOUNDS_URL + "emotional/" + sound_with_ext
-            )
+            sound_url = settings.SOUNDS_URL + "emotional/" + sound_with_ext
             self.model.objects.create(name=sound_name, url=sound_url)
         self.message_user(request, "Previous Emotional sounds removed and newly added")
         return HttpResponseRedirect("../")

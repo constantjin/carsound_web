@@ -12,4 +12,16 @@ export default {
     },
     base: "/static/",
   },
+  server: {
+    proxy: {
+      "/api": {
+        target: "http://127.0.0.1:8000/api",
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+      "/static/stims": {
+        target: "http://127.0.0.1:8000/static/stims",
+        rewrite: (path) => path.replace(/^\/static\/stims/, ""),
+      },
+    },
+  },
 };

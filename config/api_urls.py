@@ -27,6 +27,12 @@ urlpatterns = [
         name="get-emotional",
     ),
     path(
+        # {% url 'api:get-base' %}
+        route="get-base/",
+        view=sounds_views.get_base_sound,
+        name="get-base",
+    ),
+    path(
         # {% url 'api:ratings' %}
         route="ratings/",
         view=ratings_view.RatingCreateAPIView.as_view(),

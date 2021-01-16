@@ -1,4 +1,5 @@
 from django.urls import reverse
+from django.conf import settings
 
 from rest_framework.test import APITestCase
 from rest_framework import status
@@ -11,6 +12,7 @@ from ..models import RunSound, EmotionalSound
 class TestSoundsAPI(APITestCase):
     def setUp(self):
         self.subject = Subject.objects.create(subject_id=0, name="John Doe")
+        self.subject_b = Subject.objects.create(subject_id=1, name="John Doe")
         self.run_base = RunSound.objects.create(name="base", url="")
         self.run_gamma_bi = RunSound.objects.create(
             name="gamma_bi", url="http://example.com/gamma_bi.wav"
@@ -51,6 +53,30 @@ class TestSoundsAPI(APITestCase):
         )
         self.assertEqual(response.data["name"], "gamma_bi")
 
+    def test_get_run_204(self):
+        Rating.objects.create(
+            subject=self.subject_b,
+            run=self.run_base,
+            emotional=self.emotional_102,
+            arousal=1,
+            dominance=2,
+            valence=3,
+        )
+        Rating.objects.create(
+            subject=self.subject_b,
+            run=self.run_gamma_bi,
+            emotional=self.emotional_102,
+            arousal=1,
+            dominance=2,
+            valence=3,
+        )
+        response = self.client.get(
+            reverse("api:get-run", kwargs={"subject_pk": self.subject_b.id})
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        Rating.objects.filter(subject=self.subject_b).delete()  # Clean up
+
     def test_get_emotional(self):
         response = self.client.get(
             reverse(
@@ -85,3 +111,35 @@ class TestSoundsAPI(APITestCase):
             )
         )
         self.assertEqual(response.data["name"], "102")
+
+    def test_get_emotional_204(self):
+        Rating.objects.create(
+            subject=self.subject_b,
+            run=self.run_base,
+            emotional=self.emotional_101,
+            arousal=1,
+            dominance=2,
+            valence=3,
+        )
+        Rating.objects.create(
+            subject=self.subject_b,
+            run=self.run_base,
+            emotional=self.emotional_102,
+            arousal=1,
+            dominance=2,
+            valence=3,
+        )
+        response = self.client.get(
+            reverse(
+                "api:get-emotional",
+                kwargs={"subject_pk": self.subject_b.id, "run_pk": self.run_base.id},
+            )
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+
+        Rating.objects.filter(subject=self.subject_b).delete()  # Clean up
+
+    def test_get_base_url(self):
+        response = self.client.get(reverse("api:get-base"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["url"], settings.BASE_SOUND_URL)

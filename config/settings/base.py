@@ -127,7 +127,7 @@ STATICFILES_DIRS = (
 # Sounds files
 SOUNDS_URL = "static/stims/"
 SOUNDS_ROOT = os.path.join(BASE_DIR, SOUNDS_URL)
-BASE_SOUND_URL = DOMAIN + SOUNDS_URL + "base/" + "carsound.wav"
+BASE_SOUND_URL = SOUNDS_URL + "base/" + "carsound.wav"
 
 # Maintenance mode
 # if True admin site will not be affected by the maintenance-mode page
