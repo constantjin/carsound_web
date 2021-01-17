@@ -17,17 +17,24 @@ export default function useHowler() {
     const promise = new Promise((resolve, reject) => {
       if (isBaseCreated()) {
         resolve();
+      } else {
+        const baseHowl = new Howl({
+          src: [url],
+          preload: true,
+          loop: true,
+        });
+        if (baseHowl.state() === "loaded") {
+          sounds.base_sound = baseHowl;
+          console.log("-- DEBUG -- \nbase sound PREVIOUSLY loaded");
+          resolve();
+        } else {
+          baseHowl.once("load", () => {
+            sounds.base_sound = baseHowl;
+            console.log("-- DEBUG -- \nbase sound loaded");
+            resolve();
+          });
+        }
       }
-      const baseHowl = new Howl({
-        src: [url],
-        preload: true,
-        loop: true,
-      });
-      baseHowl.on("load", () => {
-        sounds.base_sound = baseHowl;
-        console.log("-- DEBUG -- \nbase sound loaded");
-        resolve();
-      });
     });
     return promise;
   };
@@ -35,6 +42,7 @@ export default function useHowler() {
   const destroyBaseSound = () => {
     if (isBaseCreated()) {
       sounds.base_sound.unload();
+      console.log("-- DEBUG -- \nbase sound destroyed");
     }
     sounds.base_sound = null;
   };
@@ -59,20 +67,29 @@ export default function useHowler() {
 
   const createRunSound = (url) => {
     const promise = new Promise((resolve, reject) => {
-      if (url === "") {
+      if (url !== "") {
+        const runHowl = new Howl({
+          src: [url],
+          preload: true,
+          loop: true,
+          volume: 0.3,
+        });
+        if (runHowl.state() === "loaded") {
+          sounds.run_sound = runHowl;
+          console.log("-- DEBUG -- \nrun sound PREVIOUSLY loaded");
+          resolve();
+        } else {
+          runHowl.once("load", () => {
+            sounds.run_sound = runHowl;
+            console.log("-- DEBUG -- \nrun sound loaded");
+            resolve();
+          });
+        }
+      } else {
+        sounds.run_sound = null;
+        console.log("-- DEBUG -- \nrun sound[NO RUNSOUND] loaded");
         resolve();
       }
-      const runHowl = new Howl({
-        src: [url],
-        preload: true,
-        loop: true,
-        volume: 0.8,
-      });
-      runHowl.on("load", () => {
-        sounds.run_sound = runHowl;
-        console.log("-- DEBUG -- \nrun sound loaded");
-        resolve();
-      });
     });
     return promise;
   };
@@ -81,20 +98,22 @@ export default function useHowler() {
     if (isRunCreated()) {
       sounds.run_sound.unload();
     }
+    console.log("-- DEBUG -- \nrun sound destroyed");
     sounds.run_sound = null;
   };
 
   const playRunSound = () => {
     if (isRunCreated() && !isRunPlaying()) {
-      console.log("-- DEBUG -- \nrun sound playing");
       sounds.run_sound.play();
     }
+    console.log("-- DEBUG -- \nrun sound playing");
   };
 
-  const stopRunSound = () => {
+  const pauseRunSound = () => {
     if (isRunCreated()) {
-      sounds.run_sound.stop();
+      sounds.run_sound.pause();
     }
+    console.log("-- DEBUG -- \nrun sound paused");
   };
 
   // Hooks for emotional sound controls
@@ -104,23 +123,29 @@ export default function useHowler() {
     isEmotionalCreated() && sounds.emotional_sound.playing();
 
   const createEmotionalSound = (url) => {
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
       const emotionalHowl = new Howl({
         src: [url],
         preload: true,
       });
-      emotionalHowl.on("load", () => {
+      if (emotionalHowl.state() === "loaded") {
         sounds.emotional_sound = emotionalHowl;
-        console.log("-- DEBUG -- \nemotional sound loaded");
+        console.log("-- DEBUG -- \nemotional sound PREVIOUSLY loaded");
         resolve();
-      });
+      } else {
+        emotionalHowl.once("load", () => {
+          sounds.emotional_sound = emotionalHowl;
+          console.log("-- DEBUG -- \nemotional sound loaded");
+          resolve();
+        });
+      }
     });
-    return promise;
   };
 
   const destroyEmotionalSound = () => {
     if (isEmotionalCreated()) {
       sounds.emotional_sound.unload();
+      console.log("-- DEBUG -- \nemotional sound destroyed");
     }
     sounds.emotional_sound = null;
   };
@@ -151,7 +176,7 @@ export default function useHowler() {
     createRunSound,
     destroyRunSound,
     playRunSound,
-    stopRunSound,
+    pauseRunSound,
     createEmotionalSound,
     destroyEmotionalSound,
     playEmotionalSound,

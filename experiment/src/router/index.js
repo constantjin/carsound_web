@@ -6,9 +6,19 @@ import useHowler from "../hooks/useHowler";
 import Intro from "../pages/Intro.vue";
 import Run from "../pages/Run.vue";
 import Emotional from "../pages/Emotional.vue";
+import Rating from "../pages/Rating.vue";
+import End from "../pages/End.vue";
+import Error from "../pages/Error.vue";
 
 const { getBaseSound, getRunSound, getEmotionalSound } = useExperiment();
-const { createBaseSound, createRunSound, createEmotionalSound } = useHowler();
+const {
+  createBaseSound,
+  createRunSound,
+  createEmotionalSound,
+  pauseBaseSound,
+  destroyBaseSound,
+  destroyRunSound,
+} = useHowler();
 
 const routes = [
   {
@@ -33,10 +43,10 @@ const routes = [
         await createRunSound(url);
         next();
       } else if (result === "end") {
-        // TODO: next("/end");
-        next("/");
+        destroyBaseSound();
+        next("/end");
       } else if (result === "error") {
-        next("/");
+        next("/error");
       }
     },
   },
@@ -51,11 +61,28 @@ const routes = [
         next();
       } else if (result === "end") {
         // Redirect to the new run
+        destroyRunSound();
+        pauseBaseSound();
         next("/run");
       } else if (result === "error") {
-        next("/");
+        next("/error");
       }
     },
+  },
+  {
+    path: "/rating",
+    name: "Rating",
+    component: Rating,
+  },
+  {
+    path: "/end",
+    name: "End",
+    component: End,
+  },
+  {
+    path: "/error",
+    name: "Error",
+    component: Error,
   },
 ];
 

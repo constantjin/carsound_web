@@ -21,9 +21,8 @@ const {
 
 onMounted(async () => {
   await playEmotionalSound();
-  pauseBaseSound();
-  stopRunSound();
-  console.log("TODO: route to rating page");
+  destroyEmotionalSound();
+  router.push("/rating");
 });
 </script>
 

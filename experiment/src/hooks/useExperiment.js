@@ -7,6 +7,7 @@ const registerApi = "/api/register/";
 const baseSoundApi = "/api/get-base/";
 const runSoundApi = "/api/get-run/";
 const emotionalSoundApi = "/api/get-emotional/";
+const ratingApi = "/api/ratings/";
 
 const { showError, resetError } = useError();
 
@@ -132,6 +133,27 @@ export default function useExperiment() {
     }
   };
 
+  // Hooks for sending ratings
+  const sendRating = async ({ arousal, dominance, valence }) => {
+    try {
+      const response = await axios.post(ratingApi, {
+        subject: experiment.subject_pk,
+        run: experiment.run_pk,
+        emotional: experiment.emotional_pk,
+        arousal,
+        dominance,
+        valence,
+      });
+      console.log(
+        `-- DEBUG -- \nrating sent. rating ID:\n  ${response.data.id}`
+      );
+      resetError();
+    } catch (err) {
+      console.error(err);
+      showError("서버 에러가 발생했습니다");
+    }
+  };
+
   return {
     ...toRefs(experiment),
     registerSubject,
@@ -139,5 +161,6 @@ export default function useExperiment() {
     getBaseSound,
     getRunSound,
     getEmotionalSound,
+    sendRating,
   };
 }
